@@ -176,7 +176,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /* hPrevInstance */,
   }
 
   UString dirPrefix ("." STRING_PATH_SEPARATOR);
-  UString appLaunched;
+  UString appLaunched, extractDialogText;
   bool showProgress = true;
   if (!config.IsEmpty())
   {
@@ -190,6 +190,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /* hPrevInstance */,
     const UString friendlyName = GetTextConfigValue(pairs, "Title");
     const UString installPrompt = GetTextConfigValue(pairs, "BeginPrompt");
     const UString progress = GetTextConfigValue(pairs, "Progress");
+    extractDialogText = GetTextConfigValue(pairs, "ExtractDialogText");
     if (progress.IsEqualTo_Ascii_NoCase("no"))
       showProgress = false;
     const int index = FindTextConfigItem(pairs, "Directory");
@@ -234,7 +235,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /* hPrevInstance */,
     bool isCorrupt = false;
     UString errorMessage;
     HRESULT result = ExtractArchive(codecs, fullPath, tempDirPath, showProgress,
-      isCorrupt, errorMessage);
+      extractDialogText, isCorrupt, errorMessage);
     
     if (result != S_OK)
     {
